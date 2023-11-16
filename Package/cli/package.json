@@ -1,0 +1,43 @@
+{
+  "name": "hooks-boost",
+  "version": "1.0.3",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.cjs",
+    "start:dev": "ts-node src/index.ts",
+    "dev": "tsup src/index.ts --watch",
+    "build": "tsup src/index.ts",
+    "release": "changeset publish",
+    "version": "changeset version",
+    "postversion": "npm publish",
+    "pub:beta": "npm run build && npm  publish --no-git-checks --access public --tag beta",
+    "pub:next": "npm run build && npm  publish --no-git-checks --access public --tag next",
+    "pub:release": "npm run build && npm  publish --access public"
+  },
+  "exports": "./dist/index.cjs",
+  "bin": "./dist/index.cjs",
+  "main": "./dist/index.cjs",
+  "keywords": [],
+  "author": "",
+  "description": "Add Hooks to your apps.",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^20.9.0",
+    "@types/prompts": "^2.4.8",
+    "chalk": "^5.3.0",
+    "changeset": "^0.2.6",
+    "commander": "^11.1.0",
+    "tsup": "^7.2.0",
+    "typescript": "^5.2.2",
+    "zod": "^3.22.4"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.2",
+    "fs-extra": "^11.1.1",
+    "prompts": "^2.4.2"
+  }
+}
