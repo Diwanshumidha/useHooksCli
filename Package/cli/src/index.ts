@@ -5,6 +5,8 @@ import * as fs from "fs/promises";
 import * as path from "path";
 import prompts from "prompts";
 import { Hooks } from "./HooksConstant";
+import { logger } from "./logger";
+import chalk from "chalk";
 
 process.on("SIGINT", () => process.exit(0));
 process.on("SIGTERM", () => process.exit(0));
@@ -21,19 +23,19 @@ async function main() {
     .action(async () => {
       try {
         const response = await prompts([
-          // {
-          //   type: "toggle",
-          //   name: "typescript",
-          //   message: "Are you using typescript?",
-          //   initial: true,
-          //   active: "yes",
-          //   inactive: "no",
-          // },
+          {
+            type: "toggle",
+            name: "typescript",
+            message: `Are you using ${chalk.green("typescript")}?`,
+            initial: true,
+            active: "yes",
+            inactive: "no",
+          },
           {
             type: "text",
             name: "path",
-            message: `Where You Want to install Hooks?`,
-            initial: "./testing/hooks",
+            message: `Where You Want to install Hooks? ${chalk.green("path:")}`,
+            initial: "./src/hooks",
           },
           {
             type: "autocompleteMultiselect",
@@ -46,23 +48,30 @@ async function main() {
           },
         ]);
 
-        // console.log(response);
-
         const SelectedHooks = response.hooks as [string];
 
-        SelectedHooks.forEach(async (hook) => {
-          const [hookname, hookurl] = hook.split("|");
-          const data = await FetchFile(hookurl);
-          if (!data) {
-            console.log(`Cannot Install ${hookname}`);
-            return null;
-          }
+        for (const hookname of SelectedHooks) {
+          const hookurl = getDataUrl(hookname, response.typescript);
+          try {
+            const data = await FetchFile(hookurl);
+            if (!data) {
+              logger.error(`Cannot Install ${hookname}`);
+              return undefined;
+            }
 
-          DownloadFile(response.path, data, `${hookname}.js`);
-          console.log(`Succesfully Installed ${hookname}`);
-        });
+            DownloadFile(
+              response.path,
+              data,
+              `${hookname}.${response.typescript ? "ts" : "js"}`
+            );
+            logger.info(`Successfully Installed ${hookname}`);
+          } catch (error) {
+            logger.error(`Error installing ${hookname}: ${error}`);
+          }
+        }
+        console.log(chalk.bold.green("Successfully Installed Hooks "));
       } catch (error: any) {
-        console.error("Error during installation:", error.message);
+        logger.error("Error during installation:", error.message);
       }
     });
 
@@ -75,7 +84,6 @@ async function DownloadFile(
   name: string
 ) {
   const hooksFolderPath = path.join(process.cwd(), destinationpath);
-  console.log(hooksFolderPath);
   await fs.mkdir(hooksFolderPath, { recursive: true });
 
   // Write the fetched data to ./hooks/fn.ts
@@ -96,7 +104,15 @@ async function FetchFile(url: string) {
     const data = await res.text();
     return data;
   } catch (error) {
-    console.log(error);
+    logger.error(error);
   }
 }
+
+function getDataUrl(name: string, istypescript: boolean) {
+  const baseurl = `https://raw.githubusercontent.com/Diwanshumidha/useHooksCli/main/Hooks/${
+    istypescript ? "Typescript" : "Javascript"
+  }/${name}.${istypescript ? "ts" : "js"}`;
+  return baseurl;
+}
+
 main();
