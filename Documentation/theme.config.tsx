@@ -1,15 +1,13 @@
 import React from "react";
 import { DocsThemeConfig } from "nextra-theme-docs";
+import Icon from "./components/Logo";
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: <span style={{display:"flex", justifyContent:"center", alignItems:"center"}}> <Icon fill='white' /> Use Hooks Cli</span>,
   project: {
-    link: "https://github.com/shuding/nextra-docs-template",
+    link: "https://github.com/Diwanshumidha/useHooksCli",
   },
-  chat: {
-    link: "https://discord.com",
-  },
-  docsRepositoryBase: "https://github.com/shuding/nextra-docs-template",
+  docsRepositoryBase: "https://github.com/Diwanshumidha/useHooksCli",
   useNextSeoProps() {
     return {
       titleTemplate: "%s – useHooks",
