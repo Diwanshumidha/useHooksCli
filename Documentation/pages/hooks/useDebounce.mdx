@@ -1,0 +1,37 @@
+# useDebounce
+
+The `useDebounce` hook is a utility that helps debounce a value, allowing you to delay the execution of a function until after a specified amount of time has elapsed since the last time the debounced function was invoked.
+
+## Installation
+
+
+```bash copy
+  npx hooks-boost install
+```
+
+## Usage
+
+```jsx
+import { useDebounce } from 'hooks-boost';
+
+const [val,setVal] = useState("")
+const debouncedValue = useDebounce(val, 300);
+```
+
+## Parameters
+
+- `value` (any): The value you want to debounce.
+- `delay` (number): The time in milliseconds to wait before updating the debounced value.
+
+## Returns
+
+| Property           | Type             | Description                                      |
+| ------------------ | ----------------- | ------------------------------------------------ |
+| debouncedvalue           | any  | The Value that will update after debounced time |
+
+
+
+{/* 
+## Demo 
+
+[See The Demo](https://codesandbox.io/p/sandbox/usebatterystate-2t4qw6?file=%2Fapp%2Fpage.tsx%3A1%2C1) */}

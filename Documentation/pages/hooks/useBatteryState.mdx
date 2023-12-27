@@ -1,0 +1,49 @@
+# useBatteryState
+
+The `useBatteryState` hook allows you to effortlessly monitor and access battery-related information in your React application.
+
+## Installation
+
+
+```bash copy
+  npx hooks-boost install
+```
+
+## Usage
+
+```jsx
+import useBattery from "./useBattery";
+
+function BatteryComponent() {
+  const { charging, chargingTime, dischargingTime, level, loading } = useBattery();
+
+  // Access batteryState properties such as batteryState.level, batteryState.charging, etc.
+
+  return (
+    <div>
+      <p>Battery Level: {level}</p>
+      <p>Charging: {charging ? "Yes" : "No"}</p>
+    </div>
+  );
+}
+```
+
+## Parameters
+
+None
+
+## Returns
+
+| Property           | Type             | Description                                      |
+| ------------------ | ----------------- | ------------------------------------------------ |
+| charging           | boolean  | Indicates whether the battery is currently charging. |
+| chargingTime     | 'Infinity' or number | The estimated time until the battery is fully charged. |
+| dischargingTime   |'Infinity' or number| The estimated time until the battery is fully discharged. |
+| level     |  number         | The current battery level as a percentage.         |
+| loading            | boolean   | Indicates whether the battery information is still loading.  |
+
+
+
+## Demo 
+
+[See The Demo](https://codesandbox.io/p/sandbox/usebatterystate-2t4qw6?file=%2Fapp%2Fpage.tsx%3A1%2C1)
